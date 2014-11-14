@@ -9,6 +9,14 @@ import org.springframework.jms.core.MessageCreator;
 
 import com.alibaba.fastjson.JSON;
 
+/**
+ * 
+* @ClassName: QueueUtils 
+* @Description: JMS 工具类 
+* @author gqwang
+* @date 2014年11月14日 下午2:07:44 
+*
+ */
 public class QueueUtils {
 	/** jms模版 **/
 	private JmsTemplate jmsTemplate;
