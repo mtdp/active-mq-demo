@@ -16,9 +16,7 @@ public class TestMQ {
 	public static void main(String[] args) {
 		
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("/spring-active-mq.xml");
-		
 		send2(ctx);
-		
 	}
 	
 	public static void send2(ApplicationContext ctx){
