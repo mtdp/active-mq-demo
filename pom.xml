@@ -1,0 +1,242 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>me.wanx.mq</groupId>
+  <artifactId>actvie-mq-demo</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>actvie-mq-demo Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  
+
+   <properties>
+  		<!-- common setting -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.jdk.version>1.6</project.build.jdk.version>
+  		<!-- maven plugins setting -->
+		<maven.compiler.plugin.version>2.3.2</maven.compiler.plugin.version>
+		<maven.surefire.plugin.version>2.12</maven.surefire.plugin.version>
+		<maven.failsafe.plugin.version>2.12</maven.failsafe.plugin.version>
+		<surefire.junit47.version>2.12</surefire.junit47.version>
+		<cobertura.maven.plugin.version>2.5.1</cobertura.maven.plugin.version>
+		<maven.resources.plugin.version>2.5</maven.resources.plugin.version>
+		<maven.war.plugin.version>2.2</maven.war.plugin.version>
+		<maven.war.plugin.directory>src/main/webapp/WEB-INF</maven.war.plugin.directory>
+		<maven.war.plugin.targetPath>WEB-INF</maven.war.plugin.targetPath>
+		<maven.jar.plugin.version>2.3.2</maven.jar.plugin.version>
+		<maven.deploy.plugin.version>2.7</maven.deploy.plugin.version>
+		<jetty.version>8.1.5.v20120716</jetty.version>
+		<sonar.maven.plugin.version>2.14</sonar.maven.plugin.version>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>me.wanx.common.core</groupId>
+      <artifactId>common-core</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>servlet-api</artifactId>
+		<version>2.5</version>
+		<scope>provided</scope>
+	</dependency>
+	<!-- jsr303 bean validation 验证的实现 -->
+	<dependency>  
+        <groupId>org.hibernate</groupId>  
+        <artifactId>hibernate-validator</artifactId>  
+        <version>4.2.0.Final</version>  
+    </dependency> 
+    <dependency>
+    	<groupId>javax.validation</groupId>
+    	<artifactId>validation-api</artifactId>
+    	<version>1.0.0.GA</version>
+    </dependency>
+    
+    <dependency>
+	    <groupId>org.slf4j</groupId>
+	    <artifactId>slf4j-simple</artifactId>
+	    <version>1.5.6</version>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.apache.activemq</groupId>
+		<artifactId>activemq-core</artifactId>
+		<version>5.7.0</version>
+	</dependency>
+  </dependencies>
+  
+  <build>
+	 <finalName>active-mq-demo</finalName>
+	<defaultGoal>install</defaultGoal>
+	<plugins>
+		<!-- compiler插件, 设定JDK版本 -->
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>${maven.compiler.plugin.version}</version>
+			<configuration>
+				<!--
+					configuration:通常用于私有不开源的plugin,不能够详细了解plugin的内部工作原理，但使plugin满足的properties
+				-->
+				<source>${project.build.jdk.version}</source>
+				<target>${project.build.jdk.version}</target>
+				<encoding>${project.build.sourceEncoding}</encoding>
+			</configuration>
+		</plugin>
+		<!-- test插件 -->
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-surefire-plugin</artifactId>
+			<version>${maven.surefire.plugin.version}</version>
+			<configuration>
+				<argLine>-Dfile.encoding=UTF-8</argLine>
+				<includes>
+					<include implementation="java.lang.String">**/*TestAbstract.class</include>
+					<include implementation="java.lang.String">**/*Test.class</include>
+				</includes>
+			</configuration>
+		</plugin>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-failsafe-plugin</artifactId>
+			<version>${maven.failsafe.plugin.version}</version>
+			<dependencies>
+				<dependency>
+					<groupId>org.apache.maven.surefire</groupId>
+					<artifactId>surefire-junit47</artifactId>
+					<version>${surefire.junit47.version}</version>
+				</dependency>
+			</dependencies>
+			<executions>
+				<execution>
+					<id>integration-test</id>
+					<goals>
+						<goal>integration-test</goal>
+					</goals>
+				</execution>
+			</executions> 
+		</plugin>
+		<!-- cobertura插件 -->
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>cobertura-maven-plugin</artifactId>
+			<version>${cobertura.maven.plugin.version}</version>
+		</plugin>
+		<!-- war插件, 设定war名称不带版本号 -->
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-war-plugin</artifactId>
+			<version>${maven.war.plugin.version}</version>
+			<configuration>
+				<warName>${project.build.finalName}</warName>
+				<webResources>
+					<resource>
+						<directory>${maven.war.plugin.directory}</directory>
+						<targetPath>${maven.war.plugin.targetPath}</targetPath>
+						<filtering>true</filtering>
+					</resource>
+				</webResources>
+			</configuration>
+		</plugin>
+		<!-- resource插件, 设定编码 -->
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-resources-plugin</artifactId>
+			<version>${maven.resources.plugin.version}</version>
+			<configuration>
+				<encoding>${project.build.sourceEncoding}</encoding>
+			</configuration>
+		</plugin>
+		<!-- jar相关插件 -->
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-jar-plugin</artifactId>
+			<version>${maven.jar.plugin.version}</version>
+			<configuration>
+				<archive>
+					<manifest>
+						<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+						<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+					</manifest>
+				</archive>
+			</configuration>
+		</plugin>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-source-plugin</artifactId>
+			<version>2.1.2</version>
+		</plugin>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-eclipse-plugin</artifactId>
+			<version>2.9</version>
+			<configuration>
+				<additionalProjectnatures>
+					<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+				</additionalProjectnatures>
+				<additionalBuildcommands>
+					<buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+				</additionalBuildcommands>
+				<downloadSources>true</downloadSources>
+				<downloadJavadocs>false</downloadJavadocs>
+				<wtpversion>2.0</wtpversion>
+			</configuration>
+		</plugin>
+		<!-- deploy插件 -->
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-deploy-plugin</artifactId>
+			<version>${maven.deploy.plugin.version}</version>
+			<configuration>
+				<skip>false</skip>
+			</configuration>
+		</plugin>
+		<!-- jetty插件,设定重载模式 -->
+		<plugin>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jetty-maven-plugin</artifactId>
+			<version>${jetty.version}</version>
+			<configuration>
+				<reload>manual</reload>
+			</configuration>
+		</plugin>
+		<!-- dependency插件 -->
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-dependency-plugin</artifactId>
+			<version>2.4</version>
+		</plugin>
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>versions-maven-plugin</artifactId>
+			<version>1.3.1</version>
+		</plugin>
+		<!-- exec java 插件 -->
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>exec-maven-plugin</artifactId>
+			<version>1.2.1</version>
+		</plugin>
+		<!-- sonar插件 -->
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>sonar-maven-plugin</artifactId>
+			<version>${sonar.maven.plugin.version}</version>
+		</plugin>
+		<!-- 增加更多的Source和Test Source目录插件 -->
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>build-helper-maven-plugin</artifactId>
+			<version>1.7</version>
+		</plugin>
+	</plugins>
+	<resources>
+		<resource>
+			<directory>src/main/resources</directory>
+			<filtering>true</filtering>
+		</resource>
+	</resources>
+  </build>
+  
+  
+</project>
