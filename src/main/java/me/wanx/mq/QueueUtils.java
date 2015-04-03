@@ -15,6 +15,8 @@ import com.alibaba.fastjson.JSON;
 * @Description: JMS 工具类 
 * @author gqwang
 * @date 2014年11月14日 下午2:07:44 
+* 
+* javax.jms 包在jdk1.5文档中
 *
  */
 public class QueueUtils {
