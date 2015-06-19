@@ -2,7 +2,6 @@ package me.wanx.hornetq.monitor;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +20,7 @@ import javax.management.remote.JMXServiceURL;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 /**
  * 监控hornetq队列中消息的数量
@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 * @date 2015年1月23日 上午10:16:27 
 *
  */
+@Service
 public class MonitorHornetqMessage {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MonitorHornetqMessage.class);
@@ -44,6 +45,10 @@ public class MonitorHornetqMessage {
 	
 	/** 保存队列消息数量数据 **/
 	private Map<String,List<Long>> map = new HashMap<String,List<Long>>();
+	
+	public MonitorHornetqMessage(){
+		new MonitorHornetqMessage("10.48.171.169", 4000);
+	}
 	
 	public MonitorHornetqMessage(String host,int port){
 		this.host = host;
@@ -77,12 +82,13 @@ public class MonitorHornetqMessage {
 				String module = objName.toString();
 				//过滤是队列且org.hornetq:module=JMS的信息
 				if("Queue".equals(type) && module.indexOf(MonitorHornetqMessage.MODULE_JMS) > -1 && name != null && name.indexOf("sgs") > -1){
-					//DeliveringCount MessagesAdded
-					Object value = mBean.getAttribute(objName, "DeliveringCount");
-					if(((Integer)value) > 0){
-						logger.info("-----:"+value);
-						logger.info("objectName="+objName);
-					}
+					//DeliveringCount MessagesAdded ConsumerCount
+					Object value = mBean.getAttribute(objName, "ConsumerCount");
+					Object value1 = mBean.getAttribute(objName, "MessagesAdded");
+					Object value2 = mBean.getAttribute(objName, "DeliveringCount");
+//					if(((Integer)value) > 0){
+						logger.info("objectName="+objName+"|ConsumerCount==>"+value+"|MessagesAdded==>"+value1+"|DeliveringCount==>"+value2);
+//					}
 //					if(map.containsKey(name)){
 //						List<Long> values = map.get(name);
 //						values.add(value);
@@ -95,13 +101,13 @@ public class MonitorHornetqMessage {
 		} catch (IOException e) {
 			logger.error("获取hornetq队列属性出错",e);
 		} catch (AttributeNotFoundException e) {
-			e.printStackTrace();
+			logger.error("获取hornetq队列属性出错",e);
 		} catch (InstanceNotFoundException e) {
-			e.printStackTrace();
+			logger.error("获取hornetq队列属性出错",e);
 		} catch (MBeanException e) {
-			e.printStackTrace();
+			logger.error("获取hornetq MBeanException 出错",e);
 		} catch (ReflectionException e) {
-			e.printStackTrace();
+			logger.error("获取hornetq队列属性出错",e);
 		}
 		
 	}
