@@ -27,16 +27,21 @@
 	  
 	  <!-- 目标是一个队列 -->
 	  <bean id="mqDestination" class="org.apache.activemq.command.ActiveMQQueue">
+	  		<!-- 
 	  		<constructor-arg index="0">
 	  			<value>demo1</value>
 	  		</constructor-arg>
+	  		 -->
+	  		<constructor-arg index="0" value="demo1"/>
 	  </bean>	   
 	  
 	  <!-- spring jms 模版 -->
 	  <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
 	  		<property name="connectionFactory" ref="mqConnectionFactory"/>
-	  		<!-- 目标队列不注入 发送时send方法可以注入 -->
+	  		<!-- 目标队列不注入 发送时send方法可以注入 
 	  		<property name="defaultDestinationName" value="demo1"/>
+	  		-->
+	  		<property name="defaultDestination" ref="mqDestination"/>
 	  </bean>
 	  
 	  <!-- 队列工具类 -->

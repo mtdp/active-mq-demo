@@ -21,6 +21,11 @@ public class QueueUtils {
 	/** jms模版 **/
 	private JmsTemplate jmsTemplate;
 
+	/**
+	 * 发送格式为json的消息
+	 * @param queueName
+	 * @param obj
+	 */
 	public void send2Queue(String queueName,final Object obj){
 		jmsTemplate.send(queueName, new MessageCreator() {
 			@Override

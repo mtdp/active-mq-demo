@@ -5,10 +5,15 @@ import javax.jms.Message;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
+import me.wanx.mq.test.bean.Foo;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jms.listener.SessionAwareMessageListener;
 
+import com.alibaba.fastjson.JSON;
+
+@SuppressWarnings("rawtypes")
 public class Customer implements SessionAwareMessageListener {
 	
 	private static final Logger logger = LoggerFactory.getLogger(Customer.class);
@@ -26,7 +31,13 @@ public class Customer implements SessionAwareMessageListener {
 			if(message instanceof TextMessage){
 				logger.info("正常");
 				TextMessage tmsg = (TextMessage)message;
-				logger.info("========receiver data:"+tmsg.getText());
+				String jsonString = tmsg.getText();
+				logger.info("========receiver data string:"+jsonString);
+				//json转换成obj
+				Foo foo = JSON.parseObject(jsonString,Foo.class);
+				logger.info("========receiver data class:"+foo);
+				Object obj = JSON.parse(jsonString);
+				logger.info("========receiver data obj:"+obj);
 				break;
 			}
 		}
