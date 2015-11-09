@@ -3,9 +3,7 @@ package me.wanx.web;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Controller
 @Scope(value = "prototype")
 public class MqAction {
-private static final Logger logger = LoggerFactory.getLogger(MqAction.class);
+	private static final Logger logger = LoggerFactory.getLogger(MqAction.class);
 	
 	protected HttpServletResponse response;
 	protected HttpServletRequest request;

@@ -1,5 +1,7 @@
 package me.wanx.mq.test;
 
+import java.util.Random;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
@@ -17,12 +19,23 @@ public class TestMQ {
 	public static void main(String[] args) {
 		
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("/spring-active-mq.xml");
-		send2(ctx);
+		int i = 0;
+		while(i < 1){
+			i++;
+			send2(ctx);
+		}
+		try {
+			Thread.currentThread().join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public static void send2(ApplicationContext ctx){
 		QueueUtils u = (QueueUtils)ctx.getBean("queueUtils");
-		u.send2Queue("demo1", new Foo(1,"foo"));
+		u.send2Queue("demo1", new Foo(new Random().nextInt(),"foo"));
 	}
 	
 	public static void send1(ApplicationContext ctx){

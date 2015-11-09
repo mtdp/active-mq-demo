@@ -47,7 +47,7 @@ public class MonitorHornetqMessage {
 	private Map<String,List<Long>> map = new HashMap<String,List<Long>>();
 	
 	public MonitorHornetqMessage(){
-		new MonitorHornetqMessage("10.48.171.169", 4000);
+		new MonitorHornetqMessage("10.48.171.177", 4000);
 	}
 	
 	public MonitorHornetqMessage(String host,int port){
