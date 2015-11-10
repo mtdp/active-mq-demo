@@ -10,8 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
-//@Service("me.wanx.mq.Provider")
+@Service("me.wanx.mq.Provider")
 public class Provider {
 	
 	private static final Logger logger = LoggerFactory.getLogger(Provider.class);

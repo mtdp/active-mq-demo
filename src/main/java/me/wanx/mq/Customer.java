@@ -22,6 +22,7 @@ public class Customer implements SessionAwareMessageListener {
 		logger.info("customer receiver message");
 		if(message instanceof TextMessage){
 			if(i == 0){
+				i++;
 				/**
 				 * http://blog.csdn.net/kimmking/article/details/19127153
 				 * 处理失败时的消息重发机制
