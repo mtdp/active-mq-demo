@@ -81,7 +81,8 @@ public class MonitorHornetqMessage {
 				String name = objName.getKeyProperty("name");
 				String module = objName.toString();
 				//过滤是队列且org.hornetq:module=JMS的信息
-				if("Queue".equals(type) && module.indexOf(MonitorHornetqMessage.MODULE_JMS) > -1 && name != null && name.indexOf("sgs") > -1){
+//				if("Queue".equals(type) && module.indexOf(MonitorHornetqMessage.MODULE_JMS) > -1 && name != null && name.indexOf("sgs") > -1){
+				if("Queue".equals(type) && module.indexOf(MonitorHornetqMessage.MODULE_JMS) > -1 && name != null && name.indexOf("supply") > -1){
 					//DeliveringCount MessagesAdded ConsumerCount
 					Object value = mBean.getAttribute(objName, "ConsumerCount");
 					Object value1 = mBean.getAttribute(objName, "MessagesAdded");
@@ -113,7 +114,7 @@ public class MonitorHornetqMessage {
 	}
 	
 	public static void main(String[] args) {
-		MonitorHornetqMessage monitor = new MonitorHornetqMessage("10.48.171.169", 4000);
+		MonitorHornetqMessage monitor = new MonitorHornetqMessage("10.48.171.177", 4000);
 		monitor.process();
 	}
 

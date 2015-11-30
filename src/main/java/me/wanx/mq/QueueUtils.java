@@ -3,7 +3,9 @@ package me.wanx.mq;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
+import javax.jms.TextMessage;
 
+import org.apache.activemq.ScheduledMessage;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
@@ -31,6 +33,25 @@ public class QueueUtils {
 			@Override
 			public Message createMessage(Session session) throws JMSException {
 				return session.createTextMessage(ObjectToJson(obj));
+			}
+		});
+	}
+	
+	/**
+	 * 延时发送格式为json的消息
+	 * @param queueName
+	 * @param obj
+	 */
+	public void sendDelay2Queue(String queueName,final Object obj){
+		jmsTemplate.send(queueName, new MessageCreator() {
+			@Override
+			public Message createMessage(Session session) throws JMSException {
+				TextMessage message = session.createTextMessage(ObjectToJson(obj));
+				//延时时间 毫秒 
+				Long time = 10*1000L;
+				//要添加activeMQ的activemq.xml配置文件broker节点属性schedulerSupport="true" 才可以生效
+				message.setLongProperty(ScheduledMessage.AMQ_SCHEDULED_DELAY, time);
+				return message;
 			}
 		});
 	}

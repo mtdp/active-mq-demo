@@ -29,6 +29,7 @@
 		<sonar.maven.plugin.version>2.14</sonar.maven.plugin.version>
 		<new.jackson.version>2.0.4</new.jackson.version>
 		<struts.version>2.3.15</struts.version>
+		<spring.webmvc.version>3.1.2.RELEASE</spring.webmvc.version>
   </properties>
   <dependencies>
     <dependency>
@@ -43,6 +44,7 @@
 		<scope>provided</scope>
 	</dependency>
 	<!-- struts -->  
+	<!-- 
     <dependency>
     	<groupId>org.apache.struts</groupId>
     	<artifactId>struts2-core</artifactId>
@@ -59,6 +61,7 @@
     	<artifactId>struts2-spring-plugin</artifactId>
     	<version>${struts.version}</version>
     </dependency>
+     -->
     <!-- end struts --> 
 	<!-- jsr303 bean validation 验证的实现 -->
 	<dependency>  
@@ -79,7 +82,7 @@
 	<dependency>
 		<groupId>org.springframework</groupId>
 		<artifactId>spring-webmvc</artifactId>
-		<version>3.0.5.RELEASE</version>
+		<version>${spring.webmvc.version}</version>
 	</dependency>
 	<dependency>
 		<groupId>com.fasterxml.jackson.core</groupId>
@@ -116,7 +119,7 @@
   </dependencies>
   
   <build>
-	 <finalName>active-mq-demo</finalName>
+	<finalName>active-mq-demo</finalName>
 	<defaultGoal>install</defaultGoal>
 	<plugins>
 		<!-- compiler插件, 设定JDK版本 -->

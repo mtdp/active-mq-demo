@@ -5,6 +5,8 @@ import javax.jms.Message;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
+import me.wanx.common.core.utils.DateUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jms.listener.SessionAwareMessageListener;
@@ -19,10 +21,10 @@ public class Customer implements SessionAwareMessageListener {
 	
 	@Override
 	public void onMessage(Message message, Session session) throws JMSException {
-		logger.info("customer receiver message");
+		logger.info("customer receiver message time="+DateUtil.getCurrentTime());
 		if(message instanceof TextMessage){
-			if(i == 0){
-				i++;
+//			if(i == 0){
+//				i++;
 				/**
 				 * http://blog.csdn.net/kimmking/article/details/19127153
 				 * 处理失败时的消息重发机制
@@ -35,8 +37,8 @@ public class Customer implements SessionAwareMessageListener {
 					5. 重试的特定应答发送到broker，broker即会在内存将消息的redelivered设置为true，redeliveryCounter++，
 					         但是这两个字段都没有持久化，即没有修改存储中的消息记录。所以broker重启时这两个字段会被重置为默认值。
 				 */
-				throw new JMSException("++++++++++++++++mq消费者测试抛出异常");
-			}
+//				throw new JMSException("++++++++++++++++mq消费者测试抛出异常");
+//			}
 			TextMessage tmsg = (TextMessage)message;
 			String jsonString = tmsg.getText();
 			logger.info("************receiver data string:"+jsonString);
